@@ -30,7 +30,6 @@ import com.example.last_project.R;
 import com.example.last_project.common.CommonVal;
 import com.example.last_project.conn.ApiClient;
 import com.example.last_project.conn.ApiInterface;
-import com.example.last_project.conn.CommonConn;
 import com.example.last_project.member.MemberVO;
 import com.google.gson.Gson;
 
@@ -52,6 +51,7 @@ public class EditProfileActivity extends AppCompatActivity {
     ImageView imgv_back, imgv_category_profile;
     AlertDialog dialog;
     String send_path;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,59 +90,48 @@ public class EditProfileActivity extends AppCompatActivity {
             edt_phone.setText(vo.getPhone());
         }
         if (vo.getFilepath() != null) {
-            Glide.with(EditProfileActivity.this).load(vo.getFilepath().replace("192.168.0.33","121.147.215.12:3302")).into(imgv_category_profile);
+          //  Glide.with(EditProfileActivity.this).load(vo.getFilepath().replace("192.168.0.33", "121.147.215.12:3302")).into(imgv_category_profile);
         }
 
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                RequestBody fileBody = RequestBody.create(MediaType.parse("image/jpeg"), new File(send_path)); //MediaType은 무슨타입인지 지정, 스트링형태의 파일패스
-                 MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", "test.jpg", fileBody);//첫번째 데이터는 이름, 두번째는 실제 파일이름, 세번째는 만들어진 파일바디
-
-                ApiInterface apiInterface = ApiClient.getApiclient().create(ApiInterface.class);
-                 apiInterface.sendOneFile_VO(fileBody, filePart).enqueue(new Callback<String>() {
-                @Override
-                public void onResponse(Call<String> call, Response<String> response) {
-
-                }
-
-                @Override
-                public void onFailure(Call<String> call, Throwable t) {
-
-                }
-            });
-
-
-
-
-
-
-
-
-
-
-
-                CommonConn conn = new CommonConn(EditProfileActivity.this, "update.me");
+                MemberVO vo = new MemberVO();
                 vo.setEmail(CommonVal.userInfo.getEmail());
-                vo.setPw(edt_pw.getText().toString());
                 vo.setName(edt_name.getText().toString());
                 vo.setNickname(edt_nickname.getText().toString());
                 vo.setPhone(edt_phone.getText().toString());
-                conn.addParams("vo", new Gson().toJson(vo));
-                conn.executeConn(new CommonConn.ConnCallback() {
-                    @Override
-                    public void onResult(boolean isResult, String data) {
-                        if (isResult) {
-                            Toast.makeText(getApplicationContext(), "정보가 업데이트 되었습니다.", Toast.LENGTH_SHORT).show();
+
+//
+                RequestBody dataTest =
+                        RequestBody.create(
+                                MediaType.parse("multipart/form-data"), new Gson().toJson(vo));
+                try {
+
+                    RequestBody fileBody = RequestBody.create(MediaType.parse("image/jpeg"), new File(send_path)); //MediaType은 무슨타입인지 지정, 스트링형태의 파일패스
+                    MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", "test.jpg", fileBody);//첫번째 데이터는 이름, 두번째는 실제 파일이름, 세번째는 만들어진 파일바디
+
+                    ApiInterface apiInterface = ApiClient.getApiclient().create(ApiInterface.class);
+                    apiInterface.sendOneFile_VO(dataTest, filePart).enqueue(new Callback<String>() {
+                        @Override
+                        public void onResponse(Call<String> call, Response<String> response) {
+
                         }
-                    }
-                });
+
+                        @Override
+                        public void onFailure(Call<String> call, Throwable t) {
+
+                        }
+                    });
+                } catch (Exception e) {
+
+                }
+
+
+                            Toast.makeText(getApplicationContext(), "정보가 업데이트 되었습니다.", Toast.LENGTH_SHORT).show();
             }
         });
-
-
-
 
 
         imgv_back.setOnClickListener(new View.OnClickListener() {
@@ -153,6 +142,7 @@ public class EditProfileActivity extends AppCompatActivity {
         });
 
     }//onCreate();
+
     //사진첨부 ----------
     String[] dialog_item = {"카메라", "갤러리"};
     public final int LOAD_IMG = 1000; //이미지 구별상수 -> startActivityForResult 라는 메소드가 인텐트가 실행되면 intent종료되고 돌아올때 결과 얻어올 수 있음.
@@ -238,7 +228,7 @@ public class EditProfileActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode ==3){
+        if (resultCode == 3) {
             finish();
 
         }
@@ -259,14 +249,14 @@ public class EditProfileActivity extends AppCompatActivity {
             Log.d("갤러리", "onActivityResult: " + data.getData().getPath());
             String img_path = getRealPath(data.getData());      //Uri 가상 : data.getData()
 
-                Glide.with(EditProfileActivity.this).load(img_path).into(imgv_category_profile);
-                send_path = img_path;
+            Glide.with(EditProfileActivity.this).load(img_path).into(imgv_category_profile);
+            send_path = img_path;
 
         } else if (requestCode == CAMERA_CODE && resultCode == RESULT_OK) {
 
 
             Glide.with(EditProfileActivity.this).load(imgFilePath).into(imgv_category_profile);
-                send_path = imgFilePath;
+            send_path = imgFilePath;
 
         }
     }
@@ -284,7 +274,6 @@ public class EditProfileActivity extends AppCompatActivity {
         cursor.close(); //커서 닫아줌
         return res;
     }
-
 
 
     private void checkDangerousPermissions() {
