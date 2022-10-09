@@ -51,6 +51,7 @@ public class EditProfileActivity extends AppCompatActivity {
     Button btn_save;
     ImageView imgv_back, imgv_category_profile;
     AlertDialog dialog;
+    String send_path;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,11 +96,12 @@ public class EditProfileActivity extends AppCompatActivity {
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RequestBody fileBody = RequestBody.create(MediaType.parse("image/jpeg"), new File(imgFilePath)); //MediaType은 무슨타입인지 지정, 스트링형태의 파일패스
+
+                RequestBody fileBody = RequestBody.create(MediaType.parse("image/jpeg"), new File(send_path)); //MediaType은 무슨타입인지 지정, 스트링형태의 파일패스
                  MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", "test.jpg", fileBody);//첫번째 데이터는 이름, 두번째는 실제 파일이름, 세번째는 만들어진 파일바디
 
                 ApiInterface apiInterface = ApiClient.getApiclient().create(ApiInterface.class);
-              apiInterface.sendFile(filePart).enqueue(new Callback<String>() {
+                 apiInterface.sendOneFile_VO(fileBody, filePart).enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
 
@@ -258,13 +260,13 @@ public class EditProfileActivity extends AppCompatActivity {
             String img_path = getRealPath(data.getData());      //Uri 가상 : data.getData()
 
                 Glide.with(EditProfileActivity.this).load(img_path).into(imgv_category_profile);
-
+                send_path = img_path;
 
         } else if (requestCode == CAMERA_CODE && resultCode == RESULT_OK) {
 
 
             Glide.with(EditProfileActivity.this).load(imgFilePath).into(imgv_category_profile);
-
+                send_path = imgFilePath;
 
         }
     }
