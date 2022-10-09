@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 두가지 배열, 아이콘 색 -->
+    <!-- 아이콘 배열 : 임시 -->
+    <array name="icons">
+
+        <item>@drawable/barcode</item>
+        <item>@drawable/mail</item>
+        <item>@drawable/pdf</item>
+        <item>@drawable/search</item>
+        <item>@drawable/user</item>
+
+
+    </array>
+    <!-- 아이콘 색-->
+    <array name="colors">
+
+        <item>#060F3E</item>
+        <item>#111E60</item>
+        <item>#1E2D7A</item>
+        <item>#2F4095</item>
+        <item>#5467D1</item>
+
+
+    </array>
+</resources>
