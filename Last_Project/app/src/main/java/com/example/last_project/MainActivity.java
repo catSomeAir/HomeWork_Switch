@@ -2,7 +2,6 @@ package com.example.last_project;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -33,6 +32,7 @@ import com.example.last_project.main.tab.Main_Tab_MyManaulFragment;
 import com.example.last_project.main.tab.Main_Tab_RecentFragment;
 import com.example.last_project.member.MemberVO;
 import com.example.last_project.mypage.MypageActivity;
+import com.example.last_project.news.NewsActivity;
 import com.example.last_project.search.NotFoundAlertActivity;
 import com.example.last_project.search.SearchActivity;
 import com.example.last_project.search.category_search.CategorySearchVO;
@@ -45,7 +45,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.hitomi.cmlibrary.CircleMenu;
 import com.ramotion.circlemenu.CircleMenuView;
 
 import java.util.ArrayList;
@@ -56,7 +55,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     LinearLayout ln_main_search;
     RecyclerView recv_main_manysearch;
     CircleMenuView menuView;
-    CircleMenu menuView1;
+
+//    CircleMenu menuView1;
     //카테고리 클릭
     LinearLayout ln_ctg_gajeon, ln_ctg_computer, ln_ctg_mobile, ln_ctg_car, ln_ctg_gagu, ln_ctg_adong, ln_ctg_samu, ln_ctg_leisure;
 
@@ -176,18 +176,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
         //하단 circle menu
 
-        //테스트
-        menuView1 = findViewById(R.id.circle_menu1);
-        menuView1.setMainMenu(Color.parseColor("#123456") ,R.drawable.barcode, R.drawable.barcode)
-                    .addSubMenu(Color.parseColor("#123456") ,R.drawable.mail)
-                    .addSubMenu(Color.parseColor("#123456") ,R.drawable.mail)
-                    .addSubMenu(Color.parseColor("#123456") ,R.drawable.mail);
-
-
         menuView = findViewById(R.id.circle_menu);
+
         menuView.setEventListener(new CircleMenuView.EventListener(){
             @Override
             public void onMenuOpenAnimationStart(@NonNull CircleMenuView view) {
+
                 Log.d("D", "onMenuOpenAnimationStart: ");
             }
 
@@ -219,7 +213,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Intent intent = new Intent(MainActivity.this, BarcodeActivity.class);
                     startActivity(intent);
                 }else if(index ==1){
-
+                    Intent intent = new Intent(MainActivity.this, NewsActivity.class);
+                    startActivity(intent);
                 }else if(index ==2){
 
                 }else if(index ==3){
@@ -242,6 +237,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
 
         });
+
 
 
 
