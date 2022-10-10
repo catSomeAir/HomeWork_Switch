@@ -48,9 +48,9 @@
     </LinearLayout>
 
     <LinearLayout
-        android:animateLayoutChanges="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
         android:orientation="vertical">
 
 
@@ -118,42 +118,47 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:orientation="vertical"
-            android:layout_weight="1">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="10dp">
+            android:layout_weight="1"
+            android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/ln_news_category"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingRight="15dp">
+                android:padding="10dp">
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_marginRight="5dp"
-                    android:src="@drawable/caret_down" />
-
-                <TextView
+                <LinearLayout
+                    android:id="@+id/ln_news_category"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="전체"
-                    android:textColor="#020E20"
-                    android:textSize="16dp" />
-            </LinearLayout>
-        </LinearLayout>
+                    android:orientation="horizontal"
+                    android:paddingRight="15dp">
 
-        <FrameLayout
-            android:id="@+id/container_news"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/tv_news_category"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="5dp"
+                        android:text="전체"
+                        android:textColor="#020E20"
+                        android:textSize="16dp" />
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginRight="5dp"
+                        android:src="@drawable/caret_down" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <FrameLayout
+                android:id="@+id/container_news"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
         </LinearLayout>
     </LinearLayout>
 

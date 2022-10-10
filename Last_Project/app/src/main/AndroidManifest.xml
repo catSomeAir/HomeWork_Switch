@@ -29,6 +29,10 @@
         android:theme="@style/Theme.Last_Project"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".news.NewsSpinerActivity"
+            android:theme="@style/Theme.AppCompat.Transparent.NoActionBar"
+            android:exported="true" />
+        <activity
             android:name=".news.NewsActivity"
             android:exported="true" />
         <activity
@@ -174,7 +178,11 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_path" />
+
         </provider>
+        <meta-data
+            android:name="com.dieam.reactnativepushnotification.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
     </application>
 
 </manifest>

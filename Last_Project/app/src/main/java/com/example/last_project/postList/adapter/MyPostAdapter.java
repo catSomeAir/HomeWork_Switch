@@ -1,7 +1,6 @@
 package com.example.last_project.postList.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.last_project.R;
 import com.example.last_project.model.detail.writng.BoardVO;
-import com.example.last_project.postList.MyPostDetailActivity;
 import com.example.last_project.postList.myPostFragment;
 
 import java.util.ArrayList;
@@ -69,9 +67,10 @@ public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.ViewHolder
             h.changeactivity.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                   Intent intent = new Intent(context,MyPostDetailActivity.class);
-                    intent.putExtra("vo", String.valueOf(list.get(i)));
-                    context.startActivity(intent);
+//                   Intent intent = new Intent(context,MyPostDetailActivity.class);
+//                    intent.putExtra("vo", String.valueOf(list.get(i)));
+//                    context.startActivity(intent);
+
                 }
             });
 

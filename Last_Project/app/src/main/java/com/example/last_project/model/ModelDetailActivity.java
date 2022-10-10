@@ -50,7 +50,6 @@ public class ModelDetailActivity extends AppCompatActivity implements View.OnCli
     ProgressBar loadingBar;
     DownloadThread dThread;
 
-    ManualVO manualVO;
     //--------------------------------------
 
 
@@ -60,7 +59,7 @@ public class ModelDetailActivity extends AppCompatActivity implements View.OnCli
 
     TextView tv_detail_cancel;
     CategorySearchVO model_info;
-
+    ManualVO manual_info;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,20 +68,25 @@ public class ModelDetailActivity extends AppCompatActivity implements View.OnCli
 
 
         model_info = (CategorySearchVO) getIntent().getSerializableExtra("model_info");
+        manual_info = (ManualVO) getIntent().getSerializableExtra("manual_info");
 
+//
+//        CommonConn conn = new CommonConn(ModelDetailActivity.this, "manual_info");
+//        conn.addParams("model_code", model_info.getModel_code());
+//        conn.executeConn_no_dialog(new CommonConn.ConnCallback() {
+//            @Override
+//            public void onResult(boolean isResult, String data) {
+//                manualVO = new Gson().fromJson(data, ManualVO.class);
+//                CommonVal.manualInfo = manualVO;
+//                File_Name = manualVO.getFilename();
+//                File_extend = manualVO.getFilename().substring(manualVO.getFilename().indexOf(".")+1);
+//                fileURL = fileURL+"?filename="+manualVO.getFilename() + "&filepath="+manualVO.getFilepath().replace("http://","");
+//            }
+//        });
 
-        CommonConn conn = new CommonConn(ModelDetailActivity.this, "manual_info");
-        conn.addParams("model_code", model_info.getModel_code());
-        conn.executeConn_no_dialog(new CommonConn.ConnCallback() {
-            @Override
-            public void onResult(boolean isResult, String data) {
-                manualVO = new Gson().fromJson(data, ManualVO.class);
-                CommonVal.manualInfo = manualVO;
-                File_Name = manualVO.getFilename();
-                File_extend = manualVO.getFilename().substring(manualVO.getFilename().indexOf(".")+1);
-                fileURL = fileURL+"?filename="+manualVO.getFilename() + "&filepath="+manualVO.getFilepath().replace("http://","");
-            }
-        });
+        File_Name = manual_info.getFilename();
+        File_extend = manual_info.getFilename().substring(manual_info.getFilename().indexOf(".")+1);
+        fileURL = fileURL+"?filename="+manual_info.getFilename() + "&filepath="+manual_info.getFilepath().replace("http://","");
 
         //검색리스트에서 클릭해서 넘어온 모델정보
 
@@ -118,7 +122,7 @@ public class ModelDetailActivity extends AppCompatActivity implements View.OnCli
 
 
         //처음은 바로 설명서 Fragment띄우기
-        getSupportFragmentManager().beginTransaction().replace(R.id.container_model_detail, new ManualFragment(ModelDetailActivity.this, model_info, manualVO)).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.container_model_detail, new ManualFragment(ModelDetailActivity.this, model_info, manual_info)).commit();
 
         //탭레이아웃 선택 이벤트
         tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -126,7 +130,7 @@ public class ModelDetailActivity extends AppCompatActivity implements View.OnCli
             public void onTabSelected(TabLayout.Tab tab) {
 
                 if (tab.getPosition() == 0) {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.container_model_detail, new ManualFragment(ModelDetailActivity.this, model_info, manualVO)).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container_model_detail, new ManualFragment(ModelDetailActivity.this, model_info, manual_info)).commit();
                 } else if (tab.getPosition() == 1) {
                     getSupportFragmentManager().beginTransaction().replace(R.id.container_model_detail, new WritingFragment(model_info)).commit();
                 } else if (tab.getPosition() == 2) {
@@ -157,7 +161,7 @@ public class ModelDetailActivity extends AppCompatActivity implements View.OnCli
         super.onResume();
 
         if (tabs.getSelectedTabPosition() == 0) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.container_model_detail, new ManualFragment(ModelDetailActivity.this, model_info, manualVO)).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.container_model_detail, new ManualFragment(ModelDetailActivity.this, model_info, manual_info)).commit();
         } else if (tabs.getSelectedTabPosition() == 1) {
             getSupportFragmentManager().beginTransaction().replace(R.id.container_model_detail, new WritingFragment(model_info)).commit();
         } else if (tabs.getSelectedTabPosition() == 2) {
@@ -286,8 +290,8 @@ public class ModelDetailActivity extends AppCompatActivity implements View.OnCli
             intent.setDataAndType(Uri.fromFile(file),
                     "application/vnd.ms-powerpoint");
         } else if (File_extend.equals("pdf")) {
-            intent.setDataAndType(Uri.fromFile(file), "application/pdf");
-//            intent.setAction(Intent.ACTION_VIEW).setData(Uri.parse(fileURL));
+//            intent.setDataAndType(Uri.fromFile(file), "application/pdf");
+            intent.setAction(Intent.ACTION_VIEW).setData(Uri.parse(fileURL));
         }
         startActivity(intent);
     }
@@ -331,11 +335,11 @@ public class ModelDetailActivity extends AppCompatActivity implements View.OnCli
         conn.executeConn_no_dialog(new CommonConn.ConnCallback() {
             @Override
             public void onResult(boolean isResult, String data) {
-                manualVO = new Gson().fromJson(data, ManualVO.class);
-                CommonVal.manualInfo = manualVO;
-                File_Name = manualVO.getFilename();
-                File_extend = manualVO.getFilename().substring(manualVO.getFilename().indexOf(".")+1);
-                fileURL = fileURL+"?filename="+manualVO.getFilename() + "&filepath="+manualVO.getFilepath().replace("http://","");
+                manual_info = new Gson().fromJson(data, ManualVO.class);
+                CommonVal.manualInfo = manual_info;
+                File_Name = manual_info.getFilename();
+                File_extend = manual_info.getFilename().substring(manual_info.getFilename().indexOf(".")+1);
+                fileURL = fileURL+"?filename="+manual_info.getFilename() + "&filepath="+manual_info.getFilepath().replace("http://","");
             }
         });
     }
