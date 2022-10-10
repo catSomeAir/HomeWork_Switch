@@ -395,11 +395,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
+        tabs.getTabAt(1).select();
         tabs.getTabAt(0).select();
+
+
         scrollView.smoothScrollTo(0,0);
-        recv_main_manysearch.scrollToPosition(0 );
+        recv_main_manysearch.scrollToPosition(0);
 
     }
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

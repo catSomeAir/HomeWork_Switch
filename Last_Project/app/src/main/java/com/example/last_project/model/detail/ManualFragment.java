@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,6 +26,8 @@ import com.example.last_project.R;
 import com.example.last_project.WebviewActivity;
 import com.example.last_project.common.CommonVal;
 import com.example.last_project.conn.CommonConn;
+import com.example.last_project.model.detail.manual.ManualVO;
+import com.example.last_project.pdf.PdfWebviewFragment;
 import com.example.last_project.search.category_search.CategorySearchVO;
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener;
@@ -69,12 +73,17 @@ public class ManualFragment extends Fragment implements OnPageChangeListener, On
     //디비에서 조회한 찜하기 상태
     String help = "";
 
+    //설명서
+    WebView webView_manual;
+    WebViewClient webViewClient;
+    ManualVO manual_info;
     public ManualFragment() {
     }
 
-    public ManualFragment(Context context, CategorySearchVO model_info) {
+    public ManualFragment(Context context, CategorySearchVO model_info, ManualVO manual_info) {
         this.context = context;
         this.model_info = model_info;
+        this.manual_info = manual_info;
     }
 
     @Override
@@ -117,6 +126,19 @@ public class ManualFragment extends Fragment implements OnPageChangeListener, On
 //
 //            }
 //        });
+//        webViewClient = new WebViewClient();
+//        webView_manual = v.findViewById(R.id.webView_manual);
+//
+//        webView_manual.setWebViewClient(webViewClient);
+//        webView_manual.getSettings().setJavaScriptEnabled(true);
+////        webView_manual.loadUrl("http://www.naver.com");
+//        webView_manual.loadUrl("http://121.147.215.12:3302/pj/upload/manaulpdf/test.pdf");
+
+
+
+
+
+            getChildFragmentManager().beginTransaction().replace(R.id.container_pdfwebview, new PdfWebviewFragment("http://121.147.215.12:3302/pj/upload/manaulpdf/test.pdf")).commit();
 
         //전체 스크롤뷰
         scrollView = v.findViewById(R.id.scrollView);

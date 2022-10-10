@@ -191,10 +191,12 @@
                 android:layout_height="0.9dp"
                 android:background="#a9a9a9" />
 
-            <com.github.barteksc.pdfviewer.PDFView
-                android:id="@+id/pdfView"
+
+            <FrameLayout
+
+                android:id="@+id/container_pdfwebview"
                 android:layout_width="match_parent"
-                android:layout_height="650dp" />
+                android:layout_height="500dp" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -281,6 +283,12 @@
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+            <com.github.barteksc.pdfviewer.PDFView
+                android:id="@+id/pdfView"
+                android:layout_width="match_parent"
+                android:layout_height="650dp" />
+
+
 
             <View
                 android:layout_width="match_parent"

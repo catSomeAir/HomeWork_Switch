@@ -90,7 +90,7 @@ public class EditProfileActivity extends AppCompatActivity {
             edt_phone.setText(vo.getPhone());
         }
         if (vo.getFilepath() != null) {
-          //  Glide.with(EditProfileActivity.this).load(vo.getFilepath().replace("192.168.0.33", "121.147.215.12:3302")).into(imgv_category_profile);
+            Glide.with(EditProfileActivity.this).load(vo.getFilepath().replace("192.168.0.33", "121.147.215.12:3302")).into(imgv_category_profile);
         }
 
         btn_save.setOnClickListener(new View.OnClickListener() {
