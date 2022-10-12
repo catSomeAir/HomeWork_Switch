@@ -14,8 +14,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.last_project.R;
+import com.example.last_project.common.CommonMethod;
+import com.example.last_project.common.CommonVal;
+import com.example.last_project.conn.CommonConn;
 import com.example.last_project.model.ModelDetailActivity;
+import com.example.last_project.model.detail.manual.ManualVO;
 import com.example.last_project.search.category_search.CategorySearchVO;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -24,6 +29,7 @@ public class Main_Tab_Adapter extends RecyclerView.Adapter<Main_Tab_Adapter.View
     String override;
     Context context;
     ArrayList<CategorySearchVO> list ;
+    ManualVO manualVO = new ManualVO();
 
     public Main_Tab_Adapter(Context context, LayoutInflater inflater,  ArrayList<CategorySearchVO> list) {
         this.inflater = inflater;
@@ -73,7 +79,37 @@ public class Main_Tab_Adapter extends RecyclerView.Adapter<Main_Tab_Adapter.View
                 public void onClick(View v) {
                     Intent intent = new Intent(context, ModelDetailActivity.class);
                     intent.putExtra("model_info", list.get(i));
-                    context.startActivity(intent);
+                    CommonConn conn = new CommonConn(context, "manual_info");
+                    conn.addParams("model_code", list.get(i).getModel_code());
+                    conn.executeConn(new CommonConn.ConnCallback() {
+                        @Override
+                        public void onResult(boolean isResult, String data) {
+                            if(isResult){
+
+                                manualVO = new Gson().fromJson(data, ManualVO.class);
+                                CommonVal.manualInfo = manualVO;
+                                intent.putExtra("manual_info", manualVO);
+                                if (CommonVal.recent_list != null) {
+
+                                    if (CommonVal.recent_list.size() <= 10) {
+                                        CommonVal.recent_list.add(list.get(i).getModel_code());
+                                        CommonMethod.setStringArrayPref(context, "recent_list", CommonVal.recent_list);
+                                    } else {
+                                        CommonVal.recent_list.remove(0);
+                                        CommonVal.recent_list.add(list.get(i).getModel_code());
+                                        CommonMethod.setStringArrayPref(context, "recent_list", CommonVal.recent_list);
+                                    }
+                                } else {
+                                    CommonVal.recent_list.add(list.get(i).getModel_code());
+                                    CommonMethod.setStringArrayPref(context, "recent_list", CommonVal.recent_list);
+                                }
+                                context.startActivity(intent);
+                            }
+
+                        }
+                    });
+
+
                 }
             });
 

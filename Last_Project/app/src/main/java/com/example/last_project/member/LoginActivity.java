@@ -19,6 +19,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.last_project.CommonAlertActivity;
 import com.example.last_project.R;
 import com.example.last_project.common.CommonVal;
 import com.example.last_project.conn.CommonConn;
@@ -346,6 +347,8 @@ public class LoginActivity extends AppCompatActivity {
                             MemberVO vo =  new Gson().fromJson(data, MemberVO.class);
                             CommonVal.userInfo = vo;
                             saveLoginInfo();
+                            Intent intent = new Intent(LoginActivity.this, CommonAlertActivity.class);
+                            intent.putExtra("page", "LoginActivity_success");
                             Toast.makeText(LoginActivity.this, "로그인 성공", Toast.LENGTH_SHORT).show();
                         }
                     });

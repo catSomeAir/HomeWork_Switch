@@ -53,7 +53,8 @@
                         </LinearLayout>-->
             <LinearLayout
                 android:id="@+id/ln_main_search"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="34dp"
                 android:background="@drawable/shape_border"
                 android:orientation="horizontal">
@@ -83,18 +84,24 @@
                     android:gravity="center_vertical"
                     android:orientation="vertical">
 
-                    <ImageView
+                   <!-- <ImageView
                         android:id="@+id/find"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_marginRight="8dp"
                         android:elevation="1dp"
-                        android:src="@drawable/btn_find" />
+                        android:src="@drawable/btn_find" />-->
                 </LinearLayout>
 
 
             </LinearLayout>
-
+            <pl.droidsonroids.gif.GifImageView
+                android:id="@+id/push_alarm"
+                android:layout_marginLeft="6dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:visibility="gone"
+                android:src="@drawable/push_alarm"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
@@ -563,6 +570,8 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center_horizontal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="14dp"
@@ -574,6 +583,7 @@
                              android:layout_height="180dp"
                              android:orientation="horizontal" />-->
                         <androidx.recyclerview.widget.RecyclerView
+                            android:layout_gravity="center_horizontal"
                             android:id="@+id/recv_main_manysearch"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

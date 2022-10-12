@@ -87,6 +87,8 @@
 
                 <ImageView
                     android:id="@+id/imgv_profile"
+                    android:scaleType="fitXY"
+                    android:adjustViewBounds="true"
                     android:layout_width="38dp"
                     android:layout_height="38dp"
                     android:src="@drawable/category_profile" />

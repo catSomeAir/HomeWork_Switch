@@ -2,11 +2,14 @@ package com.example.last_project.model.detail.writng;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -36,6 +39,11 @@ public class WriteSpaceActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        WindowManager.LayoutParams param = getWindow().getAttributes();
+        param.width = WindowManager.LayoutParams.MATCH_PARENT;
+        getWindow().setStatusBarColor(Color.parseColor("#00000000"));
+        getWindow().setAttributes(param);
+        getWindow().getAttributes().gravity = Gravity.BOTTOM;
         setContentView(R.layout.activity_write_space);
 
         ln_write_radio = findViewById(R.id.ln_write_radio);
@@ -63,7 +71,7 @@ public class WriteSpaceActivity extends AppCompatActivity {
         //프로필 이미지 등록
         try {
             if (CommonVal.userInfo.getFilepath() != null) {
-                Glide.with(WriteSpaceActivity.this).load(CommonVal.userInfo.getFilepath()).into(imgv_profile);
+                Glide.with(WriteSpaceActivity.this).load(CommonVal.userInfo.getFilepath().replace("192.168.0.33","121.147.215.12:3302").replace("localhost","121.147.215.12:3302")).into(imgv_profile);
 //            Glide.with(getContext()).load(model_info.getFilepath().replace("localhost","192.168.0.33")).into(imgv_manual_photo);
             }
         } catch (Exception e) {

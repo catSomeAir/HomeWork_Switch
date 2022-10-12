@@ -30,6 +30,9 @@ import com.example.last_project.R;
 import com.example.last_project.common.CommonVal;
 import com.example.last_project.conn.ApiClient;
 import com.example.last_project.conn.ApiInterface;
+import com.example.last_project.conn.CommonConn;
+import com.example.last_project.member.LoginActivity;
+import com.example.last_project.member.Login_in_Activity;
 import com.example.last_project.member.MemberVO;
 import com.google.gson.Gson;
 
@@ -104,32 +107,119 @@ public class EditProfileActivity extends AppCompatActivity {
                 vo.setPhone(edt_phone.getText().toString());
 
 //
-                RequestBody dataTest =
-                        RequestBody.create(
-                                MediaType.parse("multipart/form-data"), new Gson().toJson(vo));
-                try {
+                if (send_path != null) {    //첨부파일 있으면
 
-                    RequestBody fileBody = RequestBody.create(MediaType.parse("image/jpeg"), new File(send_path)); //MediaType은 무슨타입인지 지정, 스트링형태의 파일패스
-                    MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", "test.jpg", fileBody);//첫번째 데이터는 이름, 두번째는 실제 파일이름, 세번째는 만들어진 파일바디
 
-                    ApiInterface apiInterface = ApiClient.getApiclient().create(ApiInterface.class);
-                    apiInterface.sendOneFile_VO(dataTest, filePart).enqueue(new Callback<String>() {
+                        RequestBody dataTest =
+                                RequestBody.create(
+                                        MediaType.parse("multipart/form-data"), new Gson().toJson(vo));
+                    try {
+                        RequestBody fileBody = RequestBody.create(MediaType.parse("image/jpeg"), new File(send_path)); //MediaType은 무슨타입인지 지정, 스트링형태의 파일패스
+                        MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", "test.jpg", fileBody);//첫번째 데이터는 이름, 두번째는 실제 파일이름, 세번째는 만들어진 파일바디
+
+                        ApiInterface apiInterface = ApiClient.getApiclient().create(ApiInterface.class);
+                        apiInterface.sendOneFile_VO(dataTest, filePart).enqueue(new Callback<String>() {
+                            @Override
+                            public void onResponse(Call<String> call, Response<String> response) {
+                                if (CommonVal.userInfo.getSocial_code().equals("0")) {
+                                    CommonConn conn = new CommonConn(EditProfileActivity.this, "login.me");
+                                    conn.addParams("email", CommonVal.userInfo.getEmail());
+                                    conn.addParams("pw", CommonVal.userInfo.getPw());
+                                    conn.executeConn(new CommonConn.ConnCallback() {
+                                        @Override
+                                        public void onResult(boolean isResult, String data) {
+                                            if (isResult) {
+
+                                                CommonVal.userInfo = new Gson().fromJson(data, MemberVO.class);
+
+                                                Toast.makeText(getApplicationContext(), "정보가 업데이트 되었습니다.", Toast.LENGTH_SHORT).show();
+
+                                                finish();
+                                            }
+
+                                        }
+                                    });
+                                } else {
+                                    MemberVO vo1 = new MemberVO();
+                                    vo1.setEmail(CommonVal.userInfo.getEmail());
+                                    vo1.setSocial_code(CommonVal.userInfo.getSocial_code());
+                                    CommonConn conn = new CommonConn(EditProfileActivity.this, "socialinfo.me");
+
+                                    conn.addParams("vo", new Gson().toJson(vo1));
+                                    conn.executeConn(new CommonConn.ConnCallback() {
+                                        @Override
+                                        public void onResult(boolean isResult, String data) {
+                                            MemberVO vo = new Gson().fromJson(data, MemberVO.class);
+                                            CommonVal.userInfo = vo;
+
+                                            Toast.makeText(getApplicationContext(), "정보가 업데이트 되었습니다.", Toast.LENGTH_SHORT).show();
+
+                                            finish();
+                                        }
+                                    });
+                                }
+                                return;
+                            }
+
+                            @Override
+                            public void onFailure(Call<String> call, Throwable t) {
+
+                            }
+                        });
+                    } catch (Exception e) {
+
+                    }
+                }else{
+                    CommonConn conn = new CommonConn(EditProfileActivity.this, "edit_profile_nofile");
+                    conn.addParams("vo", new Gson().toJson(vo));
+                    conn.executeConn(new CommonConn.ConnCallback() {
                         @Override
-                        public void onResponse(Call<String> call, Response<String> response) {
-
-                        }
-
-                        @Override
-                        public void onFailure(Call<String> call, Throwable t) {
+                        public void onResult(boolean isResult, String data) {
 
                         }
                     });
-                } catch (Exception e) {
 
+                }
+                if (CommonVal.userInfo.getSocial_code().equals("0")) {
+                    CommonConn conn = new CommonConn(EditProfileActivity.this, "login.me");
+                    conn.addParams("email", CommonVal.userInfo.getEmail());
+                    conn.addParams("pw", CommonVal.userInfo.getPw());
+                    conn.executeConn(new CommonConn.ConnCallback() {
+                        @Override
+                        public void onResult(boolean isResult, String data) {
+                            if (isResult) {
+
+                                CommonVal.userInfo = new Gson().fromJson(data, MemberVO.class);
+
+                                Toast.makeText(getApplicationContext(), "정보가 업데이트 되었습니다.", Toast.LENGTH_SHORT).show();
+
+                                finish();
+                            }
+
+                        }
+                    });
+                } else {
+                    MemberVO vo1 = new MemberVO();
+                    vo1.setEmail(CommonVal.userInfo.getEmail());
+                    vo1.setSocial_code(CommonVal.userInfo.getSocial_code());
+                    CommonConn conn = new CommonConn(EditProfileActivity.this, "socialinfo.me");
+
+                    conn.addParams("vo", new Gson().toJson(vo1));
+                    conn.executeConn(new CommonConn.ConnCallback() {
+                        @Override
+                        public void onResult(boolean isResult, String data) {
+                            MemberVO vo = new Gson().fromJson(data, MemberVO.class);
+                            CommonVal.userInfo = vo;
+
+                            Toast.makeText(getApplicationContext(), "정보가 업데이트 되었습니다.", Toast.LENGTH_SHORT).show();
+
+                            finish();
+                        }
+                    });
                 }
 
 
-                            Toast.makeText(getApplicationContext(), "정보가 업데이트 되었습니다.", Toast.LENGTH_SHORT).show();
+                overridePendingTransition(0, 0);
             }
         });
 

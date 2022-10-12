@@ -1,5 +1,6 @@
 package com.example.last_project.member;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -8,8 +9,10 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.last_project.CommonAlertActivity;
 import com.example.last_project.R;
 import com.example.last_project.common.CommonMethod;
 import com.example.last_project.common.CommonVal;
@@ -54,7 +57,9 @@ public class Login_in_Activity extends AppCompatActivity {
                     login();
                 }
                 else {
-                    Toast.makeText(Login_in_Activity.this, "아이디와 비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(Login_in_Activity.this, CommonAlertActivity.class);
+                    intent.putExtra("page", "login_in_activity_empty");
+                    startActivityForResult(intent,0);
                 }
             }
         });
@@ -73,13 +78,20 @@ public class Login_in_Activity extends AppCompatActivity {
                     if(data == null){
                         Toast.makeText(Login_in_Activity.this, "회원정보가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
                     }else{
-                        Toast.makeText(Login_in_Activity.this, "로그인 성공", Toast.LENGTH_SHORT).show();
                         CommonVal.userInfo = new Gson().fromJson(data, MemberVO.class);
-                        if(chkbox_login_in.isChecked()){
-                            saveLoginInfo();
+                        if(CommonVal.userInfo != null){
+
+                            Toast.makeText(Login_in_Activity.this, "로그인 성공", Toast.LENGTH_SHORT).show();
+                            if (chkbox_login_in.isChecked()) {
+                                saveLoginInfo();
+                            }
+                            setResult(1);   //종료하면 LoginActivity 로 가는데 1을 들고가면 여기서 로그인해서 나간거
+                            finish();
+                        }else{
+                            Intent intent = new Intent(Login_in_Activity.this, CommonAlertActivity.class);
+                            intent.putExtra("page", "login_in_activity_fail");
+                            startActivityForResult(intent,0);
                         }
-                        setResult(1);   //종료하면 LoginActivity 로 가는데 1을 들고가면 여기서 로그인해서 나간거
-                        finish();
 
                     }
                 }else {
@@ -97,5 +109,16 @@ public class Login_in_Activity extends AppCompatActivity {
         editor.putString("pw", CommonVal.userInfo.getPw());
         editor.putString("social_code","0");
         editor.apply();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == 100){
+            login_edt_id.setText("");
+            login_edt_pw.setText("");
+            login_edt_id.requestFocus();
+
+        }
     }
 }

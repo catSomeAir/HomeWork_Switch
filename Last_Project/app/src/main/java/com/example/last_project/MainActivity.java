@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -25,6 +26,7 @@ import androidx.cardview.widget.CardView;
 import androidx.core.app.NotificationCompat;
 import androidx.core.graphics.drawable.IconCompat;
 import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -59,7 +61,11 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.ramotion.circlemenu.CircleMenuView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+
+import pl.droidsonroids.gif.GifImageView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     ImageView imgv_main_category;
@@ -86,16 +92,45 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Main_Tab_HomeFragment mtFragment = new Main_Tab_HomeFragment();
     //마켓
     LinearLayout ln_main_market1, ln_main_market2;
-
+    GifImageView push_alarm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         //알림설정하기
+        push_alarm = findViewById(R.id.push_alarm);
 
-            news_alarm();
+        push_alarm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, NewsActivity.class);
+                startActivity(intent);
+                push_alarm.setVisibility(View.GONE);
+            }
+        });
 
+
+        //알림뜨게하는거 나중에 풀기
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                while(true){
+//                    runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            news_alarm();
+//                        }
+//                    });
+//                    try {
+//                        Thread.sleep(2000);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                }
+//            }
+//        }).start();
 
 
 
@@ -242,6 +277,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } else if (index == 1) {
                     Intent intent = new Intent(MainActivity.this, NewsActivity.class);
                     startActivity(intent);
+                    push_alarm.setVisibility(View.GONE);
                 } else if (index == 2) {
                     if (CommonVal.userInfo != null) {
                         Intent intent = new Intent(MainActivity.this, BookmarkedPostActivity.class);
@@ -353,7 +389,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     ArrayList<CategorySearchVO> list = new Gson().fromJson(data, new TypeToken<ArrayList<CategorySearchVO>>() {
                     }.getType());
                     ManySearchAdapter adapter = new ManySearchAdapter(getLayoutInflater(), list, MainActivity.this);
-                    RecyclerView.LayoutManager manager = new LinearLayoutManager(MainActivity.this, RecyclerView.HORIZONTAL, false);
+//                    RecyclerView.LayoutManager manager = new LinearLayoutManager(MainActivity.this, RecyclerView.HORIZONTAL, false);
+                    GridLayoutManager manager = new GridLayoutManager(MainActivity.this, 2);
                     recv_main_manysearch.setLayoutManager(manager);
                     recv_main_manysearch.setAdapter(adapter);
                 }
@@ -425,7 +462,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        tabs.getTabAt(1).select();
 //        tabs.getTabAt(2).select();
         tabs.getTabAt(0).select();
-        news_alarm();
+//        news_alarm();
 
         scrollView.smoothScrollTo(0, 0);
         recv_main_manysearch.scrollToPosition(0);
@@ -533,6 +570,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             CommonVal.alarm_list.add(newsVO);
                             reply_cnt_before = reply_cnt_after;
                             conn_check = false;
+                            push_alarm.setVisibility(View.VISIBLE);
                             push_alarm();
                         }
                     });
@@ -557,6 +595,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void push_alarm(){
+        long now = System.currentTimeMillis();
+        Date date = new Date(now);
+        SimpleDateFormat sdf = new SimpleDateFormat("(yyyy년 MM월 dd일 hh시 mm분)");
+
+        String getTime = sdf.format(date);
 
         Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.logo_navy);
         Bitmap smallIcon = BitmapFactory.decodeResource(getResources(), R.drawable.logo_navy);
@@ -584,14 +627,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         NotificationCompat.Builder builder =
                 null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            builder = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
+            builder = new NotificationCompat.Builder(MainActivity.this, CHANNEL_ID)
                     .setSmallIcon(IconCompat.createWithBitmap(smallIcon))
                     .setContentTitle("나의설명서")
-                    .setContentText(CommonVal.alarm_list.get(CommonVal.alarm_list.size()).getReply_vo().getEmail() + "님이 댓글을 달았습니다\n" + CommonVal.alarm_list.get(CommonVal.alarm_list.size()).getReply_vo().getContent()+"    방금 전")
+                    .setContentText(CommonVal.alarm_list.get(CommonVal.alarm_list.size()-1).getReply_vo().getEmail() + "님이 댓글을 달았습니다 - \n" + CommonVal.alarm_list.get(CommonVal.alarm_list.size()-1).getReply_vo().getContent()+"\n "+getTime)
                     .setDefaults(Notification.DEFAULT_VIBRATE)
                     .setStyle(new NotificationCompat.InboxStyle()
-                            .addLine(CommonVal.alarm_list.get(CommonVal.alarm_list.size()).getReply_vo().getEmail() + "님이 댓글을 달았습니다    방금 전")
-                            .addLine(CommonVal.alarm_list.get(CommonVal.alarm_list.size()).getReply_vo().getContent()))
+                            .addLine(CommonVal.alarm_list.get(CommonVal.alarm_list.size()-1).getReply_vo().getEmail() + "님이 댓글을 달았습니다")
+                            .addLine(CommonVal.alarm_list.get(CommonVal.alarm_list.size()-1).getReply_vo().getContent()+"\n "+getTime))
                     .setLargeIcon(largeIcon)
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                     .setAutoCancel(true)

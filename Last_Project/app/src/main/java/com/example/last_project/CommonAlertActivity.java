@@ -29,7 +29,7 @@ public class CommonAlertActivity extends AppCompatActivity {
 
         WindowManager.LayoutParams param = getWindow().getAttributes();
         param.width = WindowManager.LayoutParams.MATCH_PARENT;
-        getWindow().setStatusBarColor(Color.parseColor("#020E20"));
+        getWindow().setStatusBarColor(Color.parseColor("#00000000"));
         getWindow().setAttributes(param);
         getWindow().getAttributes().gravity = Gravity.BOTTOM;
         setContentView(R.layout.activity_common_alert);
@@ -50,6 +50,9 @@ public class CommonAlertActivity extends AppCompatActivity {
         ln_yes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(page.equals("login_in_activity_fail")||page.equals("login_in_activity_empty")){
+                    setResult(100);
+                }
                 if(page.equals("EdtBookmarkedPostActivity_save")){
                     setResult(1);// 온곳을 종료시켜라
                 }
@@ -89,6 +92,27 @@ public class CommonAlertActivity extends AppCompatActivity {
         });
 
         if (page != null) {
+
+            if(page.equals("login_in_activity_empty")){
+                tv_target.setText("회원정보");
+                tv_explain1.setText("가 입력되지 않았습니다");
+                tv_explain2.setText("다시 로그인 해주세요");
+                view_center_line.setVisibility(View.GONE);
+                ln_no.setVisibility(View.GONE);
+                tv_yes.setText("확인");
+                return;
+            }
+
+            if(page.equals("login_in_activity_fail")){
+                tv_target.setText("회원정보");
+                tv_explain1.setText("가 일치하지 않습니다");
+                tv_explain2.setText("다시 로그인 해주세요");
+                view_center_line.setVisibility(View.GONE);
+                ln_no.setVisibility(View.GONE);
+                tv_yes.setText("확인");
+                return;
+            }
+
             if(page.equals("EdtBookmarkedPostActivity_save")){
                 tv_target.setText("변경사항이");
                 tv_explain1.setText("이 처리되었습니다");

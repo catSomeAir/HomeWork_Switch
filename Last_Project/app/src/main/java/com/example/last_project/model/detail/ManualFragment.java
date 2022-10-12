@@ -150,6 +150,7 @@ public class ManualFragment extends Fragment implements OnPageChangeListener, On
         tv_manual_help = v.findViewById(R.id.tv_manual_help);
         ln_manual_help = v.findViewById(R.id.ln_manual_help);
         tv_manual_help_cnt = v.findViewById(R.id.tv_manual_help_cnt);   //도움 수
+        tv_manual_help_cnt.setText(manual_info.getHelp_cnt());
         //도움이되었나요 클릭시
         ln_manual_help.setOnClickListener(new View.OnClickListener() {
             @Override

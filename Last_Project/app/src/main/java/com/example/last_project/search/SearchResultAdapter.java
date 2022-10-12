@@ -19,8 +19,11 @@ import com.bumptech.glide.Glide;
 import com.example.last_project.R;
 import com.example.last_project.common.CommonMethod;
 import com.example.last_project.common.CommonVal;
+import com.example.last_project.conn.CommonConn;
 import com.example.last_project.model.ModelDetailActivity;
+import com.example.last_project.model.detail.manual.ManualVO;
 import com.example.last_project.search.category_search.CategorySearchVO;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -29,7 +32,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
     Context context;
     SearchResultExistFragment searchResultExistFragment;
     ArrayList<CategorySearchVO> list;
-
+    ManualVO manualVO = new ManualVO();
     public SearchResultAdapter(LayoutInflater inflater, Context context) {
         this.context = context;
         this.inflater = inflater;
@@ -87,27 +90,40 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
             h.ln_search_result.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (CommonVal.recent_list != null) {
-
-                        if (CommonVal.recent_list.size() <= 10) {
-                            CommonVal.recent_list.add(list.get(i).getModel_code());
-                            CommonMethod.setStringArrayPref(context, "recent_list", CommonVal.recent_list);
-                        } else {
-                            CommonVal.recent_list.remove(0);
-                            CommonVal.recent_list.add(list.get(i).getModel_code());
-                            CommonMethod.setStringArrayPref(context, "recent_list", CommonVal.recent_list);
-                        }
-                    } else {
-                        CommonVal.recent_list.add(list.get(i).getModel_code());
-                        CommonMethod.setStringArrayPref(context, "recent_list", CommonVal.recent_list);
-                    }
-
 
                     Intent intent = new Intent(context, ModelDetailActivity.class);
                     //* 해당 제품에 대한 정보를 같이 넘겨줘야함
                     CategorySearchVO model_info = list.get(i);
                     intent.putExtra("model_info", model_info);
-                    context.startActivity(intent);
+                    CommonConn conn = new CommonConn(context, "manual_info");
+                    conn.addParams("model_code", list.get(i).getModel_code());
+                    conn.executeConn(new CommonConn.ConnCallback() {
+                        @Override
+                        public void onResult(boolean isResult, String data) {
+                            if(isResult){
+
+                                manualVO = new Gson().fromJson(data, ManualVO.class);
+                                CommonVal.manualInfo = manualVO;
+                                intent.putExtra("manual_info", manualVO);
+                                if (CommonVal.recent_list != null) {
+
+                                    if (CommonVal.recent_list.size() <= 10) {
+                                        CommonVal.recent_list.add(list.get(i).getModel_code());
+                                        CommonMethod.setStringArrayPref(context, "recent_list", CommonVal.recent_list);
+                                    } else {
+                                        CommonVal.recent_list.remove(0);
+                                        CommonVal.recent_list.add(list.get(i).getModel_code());
+                                        CommonMethod.setStringArrayPref(context, "recent_list", CommonVal.recent_list);
+                                    }
+                                } else {
+                                    CommonVal.recent_list.add(list.get(i).getModel_code());
+                                    CommonMethod.setStringArrayPref(context, "recent_list", CommonVal.recent_list);
+                                }
+                                context.startActivity(intent);
+                            }
+
+                        }
+                    });
                 }
             });
         }
