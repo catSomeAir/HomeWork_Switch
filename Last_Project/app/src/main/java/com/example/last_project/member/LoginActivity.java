@@ -41,6 +41,7 @@ import com.navercorp.nid.oauth.view.NidOAuthLoginButton;
 import com.navercorp.nid.profile.NidProfileCallback;
 import com.navercorp.nid.profile.data.NidProfileResponse;
 
+import java.lang.reflect.Member;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -262,17 +263,30 @@ public class LoginActivity extends AppCompatActivity {
                 Log.d("카카오", "kakao_profile: " + user.getKakaoAccount().getProfile().getThumbnailImageUrl());
                 Log.d("카카오", "kakao_profile: " + user.getKakaoAccount().getEmail());
                 Log.d("카카오", "kakao_profile: " + user.getKakaoAccount().getName());
+
+                String email = user.getKakaoAccount().getEmail();
+                String nickname = user.getKakaoAccount().getProfile().getNickname();
+                String filepath = user.getKakaoAccount().getProfile().getThumbnailImageUrl();
+
                 CommonConn conn = new CommonConn(LoginActivity.this,"socialinfo.me");
-                conn.addParams("email",user.getKakaoAccount().getEmail());
-                conn.addParams("social","K");
-                conn.addParams("name",user.getKakaoAccount().getName());
+
+                MemberVO vo = new MemberVO();
+                vo.setEmail(email);
+                vo.setName(nickname);
+                vo.setNickname(nickname);
+                vo.setFilepath(filepath);
+                vo.setSocial_code("K");
+
+
+                conn.addParams("vo",new Gson().toJson(vo));
+
                 conn.executeConn(new CommonConn.ConnCallback() {
                     @Override
                     public void onResult(boolean isResult, String data) {
                         Log.d("Result", "onResult: "+ isResult);
                         MemberVO vo = new Gson().fromJson(data, MemberVO.class);
                         CommonVal.userInfo = vo;
-                        saveLoginInfo();
+//                        saveLoginInfo();
                         Toast.makeText(LoginActivity.this, "로그인 성공", Toast.LENGTH_SHORT).show();
 
                     }

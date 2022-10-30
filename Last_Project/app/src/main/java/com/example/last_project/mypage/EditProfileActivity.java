@@ -125,6 +125,7 @@ public class EditProfileActivity extends AppCompatActivity {
                                     CommonConn conn = new CommonConn(EditProfileActivity.this, "login.me");
                                     conn.addParams("email", CommonVal.userInfo.getEmail());
                                     conn.addParams("pw", CommonVal.userInfo.getPw());
+                                    conn.addParams("social_code", "0");
                                     conn.executeConn(new CommonConn.ConnCallback() {
                                         @Override
                                         public void onResult(boolean isResult, String data) {
@@ -143,6 +144,7 @@ public class EditProfileActivity extends AppCompatActivity {
                                     MemberVO vo1 = new MemberVO();
                                     vo1.setEmail(CommonVal.userInfo.getEmail());
                                     vo1.setSocial_code(CommonVal.userInfo.getSocial_code());
+
                                     CommonConn conn = new CommonConn(EditProfileActivity.this, "socialinfo.me");
 
                                     conn.addParams("vo", new Gson().toJson(vo1));
@@ -184,6 +186,7 @@ public class EditProfileActivity extends AppCompatActivity {
                     CommonConn conn = new CommonConn(EditProfileActivity.this, "login.me");
                     conn.addParams("email", CommonVal.userInfo.getEmail());
                     conn.addParams("pw", CommonVal.userInfo.getPw());
+                    conn.addParams("social_code", "0");
                     conn.executeConn(new CommonConn.ConnCallback() {
                         @Override
                         public void onResult(boolean isResult, String data) {

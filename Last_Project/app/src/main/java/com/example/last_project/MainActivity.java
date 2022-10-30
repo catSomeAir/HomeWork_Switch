@@ -111,26 +111,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
 
-        //알림뜨게하는거 나중에 풀기
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                while(true){
-//                    runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            news_alarm();
-//                        }
-//                    });
-//                    try {
-//                        Thread.sleep(2000);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                }
-//            }
-//        }).start();
+//        알림뜨게하는거 나중에 풀기
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(true){
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            news_alarm();
+                        }
+                    });
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+        }).start();
 
 
 
@@ -162,6 +162,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 CommonConn conn = new CommonConn(MainActivity.this, "login.me");
                 conn.addParams("email", email);
                 conn.addParams("pw", pw);
+                conn.addParams("social_code", "0");
                 conn.executeConn_no_dialog(new CommonConn.ConnCallback() {
                     @Override
                     public void onResult(boolean isResult, String data) {

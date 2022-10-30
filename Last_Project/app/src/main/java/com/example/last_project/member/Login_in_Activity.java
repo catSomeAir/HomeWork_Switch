@@ -70,6 +70,7 @@ public class Login_in_Activity extends AppCompatActivity {
         CommonConn conn = new CommonConn(Login_in_Activity.this , "login.me");
         conn.addParams("email", login_edt_id.getText().toString());
         conn.addParams("pw", login_edt_pw.getText().toString());
+        conn.addParams("social_code", "0");
         conn.executeConn(new CommonConn.ConnCallback() {
             @Override
             public void onResult(boolean isResult, String data) {
