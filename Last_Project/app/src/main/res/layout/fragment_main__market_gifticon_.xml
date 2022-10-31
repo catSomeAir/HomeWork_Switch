@@ -89,7 +89,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
-                    android:text="24,000원"
+                    android:text="2,400P"
                     android:textColor="#000"
                     android:textSize="12dp"
                     android:textStyle="bold" />
@@ -115,7 +115,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="4dp"
-                        android:text="21,600"
+                        android:text="2,160"
                         android:textColor="#000"
                         android:textSize="12dp"
                         android:textStyle="bold" />
@@ -125,7 +125,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="4dp"
-                        android:text="원"
+                        android:text="P"
                         android:textColor="#000"
                         android:textSize="12dp" />
 

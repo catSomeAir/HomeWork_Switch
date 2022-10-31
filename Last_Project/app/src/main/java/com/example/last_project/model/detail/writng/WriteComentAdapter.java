@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.last_project.CommonAlertActivity;
 import com.example.last_project.R;
 import com.example.last_project.common.CommonVal;
 
@@ -97,6 +98,16 @@ public class WriteComentAdapter extends RecyclerView.Adapter<WriteComentAdapter.
                     context.startActivity(intent);
 
 
+                }
+            });
+
+            h.tv_reply_delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, CommonAlertActivity.class);
+                    intent.putExtra("page", "WriteComentAdapter_delete");
+                    intent.putExtra("rep_no", list.get(i).getRep_no());
+                    context.startActivity(intent);
                 }
             });
 

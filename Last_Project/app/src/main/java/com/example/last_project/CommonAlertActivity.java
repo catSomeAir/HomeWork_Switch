@@ -78,6 +78,17 @@ public class CommonAlertActivity extends AppCompatActivity {
                         }
                     });
                 }
+                if (page.equals("WriteComentAdapter_delete")) {
+
+                    CommonConn conn = new CommonConn(CommonAlertActivity.this, "board_coment_delete");
+                    conn.addParams("rep_no", getIntent().getStringExtra("rep_no"));
+                    conn.executeConn(new CommonConn.ConnCallback() {
+                        @Override
+                        public void onResult(boolean isResult, String data) {
+
+                        }
+                    });
+                }
                 finish();
                 overridePendingTransition(0, 0);
             }
@@ -135,7 +146,7 @@ public class CommonAlertActivity extends AppCompatActivity {
             }
 
             //글 삭제처리
-            if (page.equals("WriteAdapter_delete")) {
+            if (page.equals("WriteAdapter_delete") ||page.equals("WriteComentAdapter_delete")  ) {
                 tv_target.setVisibility(View.GONE);
                 tv_explain1.setText("해당 글을 삭제하시겠습니까?");
                 tv_explain2.setText("(한번 삭제된 글은 복구되지 않습니다)");
