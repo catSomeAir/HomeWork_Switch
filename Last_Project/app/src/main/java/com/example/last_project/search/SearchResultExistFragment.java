@@ -35,7 +35,8 @@ public class SearchResultExistFragment extends Fragment {
         recv_search_result = v.findViewById(R.id.recv_search_result);
 
         SearchResultAdapter adapter = new SearchResultAdapter(getLayoutInflater(), SearchResultExistFragment.this, list, getContext());// 나중에 list보내줘야함
-        RecyclerView.LayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false);
+        LinearLayoutManager  manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false);
+       manager.setReverseLayout(true);
         recv_search_result.setLayoutManager(manager);
         recv_search_result.setAdapter(adapter);
 

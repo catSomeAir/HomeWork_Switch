@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.last_project.conn.CommonConn;
 import com.example.last_project.member.LoginActivity;
+import com.example.last_project.member.join.JoinActivity;
 
 public class CommonAlertActivity extends AppCompatActivity {
     LinearLayout ln_no, ln_yes;
@@ -53,7 +54,8 @@ public class CommonAlertActivity extends AppCompatActivity {
                 if(page.equals("login_in_activity_fail")||page.equals("login_in_activity_empty")){
                     setResult(100);
                 }
-                if(page.equals("EdtBookmarkedPostActivity_save")){
+
+                if(page.equals("EdtBookmarkedPostActivity_save") || page.equals("JoinActivity")){
                     setResult(1);// 온곳을 종료시켜라
                 }
 
@@ -103,6 +105,16 @@ public class CommonAlertActivity extends AppCompatActivity {
         });
 
         if (page != null) {
+
+            if(page.equals("JoinActivity")){
+                tv_target.setText("회원가입");
+                tv_explain1.setText("을 축하드립니다");
+                tv_explain2.setText("입력하신 정보로 로그인 해주세요");
+                view_center_line.setVisibility(View.GONE);
+                ln_no.setVisibility(View.GONE);
+                tv_yes.setText("확인");
+                return;
+            }
 
             if(page.equals("login_in_activity_empty")){
                 tv_target.setText("회원정보");

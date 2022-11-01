@@ -15,8 +15,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.last_project.CommonAlertActivity;
+import com.example.last_project.MainActivity;
 import com.example.last_project.R;
 import com.example.last_project.conn.CommonConn;
 import com.example.last_project.member.MemberVO;
@@ -240,8 +243,10 @@ public class JoinActivity extends AppCompatActivity {
                                 if (data.equals("1")) {
 //                                Intent intent = new Intent(JoinActivity.this, MainActivity.class);
 //                                startActivity(intent);
-                                    setResult(1);
-                                    finish();
+                                    Intent intent = new Intent(JoinActivity.this, CommonAlertActivity.class);
+                                    intent.putExtra("page", "JoinActivity");
+                                    startActivityForResult(intent, 0);
+
                                 }
                             }
                         }
@@ -362,5 +367,14 @@ public class JoinActivity extends AppCompatActivity {
             Toast.makeText(this, "비밀번호로 부적절합니다", Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == 1){
+            setResult(1);
+            finish();
+        }
     }
 }

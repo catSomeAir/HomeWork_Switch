@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 
 import com.example.last_project.R;
+import com.example.last_project.common.CommonMethod;
 import com.example.last_project.conn.CommonConn;
 import com.example.last_project.search.category_search.CategorySearchVO;
 import com.google.android.material.tabs.TabLayout;
@@ -67,14 +68,7 @@ public class SearchResultFragment extends Fragment {
         tabs.addTab(tabs.newTab().setText("제품명").setTag(2));
         tabs.addTab(tabs.newTab().setText("모델명").setTag(3));
 
-        if (search_type != null) {
 
-            if (search_type.equals("barcode")) {
-                tabs.getTabAt(1).select();
-            } else {
-                tabs.getTabAt(0).select();
-            }
-        }
 
 
         //탭레이아웃 선택 이벤트
@@ -171,6 +165,7 @@ public class SearchResultFragment extends Fragment {
                 }
             }
 
+
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
 
@@ -181,6 +176,15 @@ public class SearchResultFragment extends Fragment {
 
             }
         });
+
+        if (search_type != null) {
+
+            if (search_type.equals("barcode")) {
+                tabs.getTabAt(1).select();
+            } else {
+                tabs.getTabAt(0).select();
+            }
+        }
         //-------------------------------------------------------------------------------------
         //DB연결해서 붙이기
 //        CommonConn conn = new CommonConn(getContext(), "test.up");
@@ -246,8 +250,10 @@ public class SearchResultFragment extends Fragment {
 
         //바코드 검색 : 실제 데이터 확인해야함!!!!!!!!!!!!!!!!!!
         if (search_type!= null&&search_type.equals("barcode")) {
-            CommonConn conn = new CommonConn(getContext(), "barcode.mo");
-            conn.addParams("barcode_search_name", search_text);
+            //CommonConn conn = new CommonConn(getContext(), "barcode.mo");
+            //conn.addParams("barcode_search_name", search_text);
+            CommonConn conn = new CommonConn(getContext(), "search.mo");
+            conn.addParams("search_div_text", CommonMethod.text_div(search_text) );
             conn.executeConn(new CommonConn.ConnCallback() {
                 @Override
                 public void onResult(boolean isResult, String data) {

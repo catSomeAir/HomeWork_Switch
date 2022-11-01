@@ -182,44 +182,44 @@ public class EditProfileActivity extends AppCompatActivity {
                     });
 
                 }
-                if (CommonVal.userInfo.getSocial_code().equals("0")) {
-                    CommonConn conn = new CommonConn(EditProfileActivity.this, "login.me");
-                    conn.addParams("email", CommonVal.userInfo.getEmail());
-                    conn.addParams("pw", CommonVal.userInfo.getPw());
-                    conn.addParams("social_code", "0");
-                    conn.executeConn(new CommonConn.ConnCallback() {
-                        @Override
-                        public void onResult(boolean isResult, String data) {
-                            if (isResult) {
-
-                                CommonVal.userInfo = new Gson().fromJson(data, MemberVO.class);
-
-                                Toast.makeText(getApplicationContext(), "정보가 업데이트 되었습니다.", Toast.LENGTH_SHORT).show();
-
-                                finish();
-                            }
-
-                        }
-                    });
-                } else {
-                    MemberVO vo1 = new MemberVO();
-                    vo1.setEmail(CommonVal.userInfo.getEmail());
-                    vo1.setSocial_code(CommonVal.userInfo.getSocial_code());
-                    CommonConn conn = new CommonConn(EditProfileActivity.this, "socialinfo.me");
-
-                    conn.addParams("vo", new Gson().toJson(vo1));
-                    conn.executeConn(new CommonConn.ConnCallback() {
-                        @Override
-                        public void onResult(boolean isResult, String data) {
-                            MemberVO vo = new Gson().fromJson(data, MemberVO.class);
-                            CommonVal.userInfo = vo;
-
-                            Toast.makeText(getApplicationContext(), "정보가 업데이트 되었습니다.", Toast.LENGTH_SHORT).show();
-
-                            finish();
-                        }
-                    });
-                }
+//                if (CommonVal.userInfo.getSocial_code().equals("0")) {
+//                    CommonConn conn = new CommonConn(EditProfileActivity.this, "login.me");
+//                    conn.addParams("email", CommonVal.userInfo.getEmail());
+//                    conn.addParams("pw", CommonVal.userInfo.getPw());
+//                    conn.addParams("social_code", "0");
+//                    conn.executeConn(new CommonConn.ConnCallback() {
+//                        @Override
+//                        public void onResult(boolean isResult, String data) {
+//                            if (isResult) {
+//
+//                                CommonVal.userInfo = new Gson().fromJson(data, MemberVO.class);
+//
+//                                Toast.makeText(getApplicationContext(), "정보가 업데이트 되었습니다.", Toast.LENGTH_SHORT).show();
+//
+//                                finish();
+//                            }
+//
+//                        }
+//                    });
+//                } else {
+//                    MemberVO vo1 = new MemberVO();
+//                    vo1.setEmail(CommonVal.userInfo.getEmail());
+//                    vo1.setSocial_code(CommonVal.userInfo.getSocial_code());
+//                    CommonConn conn = new CommonConn(EditProfileActivity.this, "socialinfo.me");
+//
+//                    conn.addParams("vo", new Gson().toJson(vo1));
+//                    conn.executeConn(new CommonConn.ConnCallback() {
+//                        @Override
+//                        public void onResult(boolean isResult, String data) {
+//                            MemberVO vo = new Gson().fromJson(data, MemberVO.class);
+//                            CommonVal.userInfo = vo;
+//
+//                            Toast.makeText(getApplicationContext(), "정보가 업데이트 되었습니다.", Toast.LENGTH_SHORT).show();
+//
+//                            finish();
+//                        }
+//                    });
+//                }
 
 
                 overridePendingTransition(0, 0);

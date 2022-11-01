@@ -2,6 +2,7 @@ package com.example.last_project.mypage;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -207,6 +208,39 @@ public class MypageActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if (CommonVal.userInfo != null) {
+            MemberVO vo = CommonVal.userInfo;
+            if (vo.getFilepath() != null) {
+                //피카소 글라이드 비교해봐야할듯
+//            Picasso.get().load(CommonVal.userInfo.getProfile_img()).into(imgv_category_profile);
+                Glide.with(MypageActivity.this).load(vo.getFilepath().replace("localhost", "121.147.215.12:3302").replace("192.168.0.33", "121.147.215.12:3302")).into(imgv_category_profile);
+            }
+
+            //등급, 포인트 나오게
+            tv_my_level.setText("lv." + vo.getMy_level());
+            tv_my_point.setText(vo.getPoint());
+            //닉네임 나오게
+            tv_nickname.setText(vo.getNickname() == null || vo.getNickname().equals("") ? vo.getEmail() : vo.getNickname());
+            CommonConn conn = new CommonConn(MypageActivity.this, "count.ct");
+            conn.addParams("email", vo.getEmail());
+            conn.executeConn(new CommonConn.ConnCallback() {
+                @Override
+                public void onResult(boolean isResult, String data) {
+                    if (isResult) {
+                        HashMap<String, String> map = new Gson().fromJson(data, new TypeToken<HashMap<String, String>>() {
+                        }.getType());
+                        tv_post_count.setText(map.get("board_count"));
+                        tv_reply_count.setText(map.get("reply_count"));
+                    }
+                }
+            });
+        }
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d("방구", "onRestart: 방구");
         if (CommonVal.userInfo != null) {
             MemberVO vo = CommonVal.userInfo;
             if (vo.getFilepath() != null) {

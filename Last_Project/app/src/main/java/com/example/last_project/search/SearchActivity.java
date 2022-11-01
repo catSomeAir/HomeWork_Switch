@@ -201,7 +201,7 @@ public class SearchActivity extends AppCompatActivity {
         //* 임시로 바코드 검색 데이터 넘어오는곳 : 추후 수정
         String barcode_search_name = getIntent().getStringExtra("barcode_search_name");
         if (barcode_search_name != null) {
-            if (barcode_search_name == "") {
+            if (barcode_search_name.equals("")) {
                 barcode_search_name = "해당하는 제품정보";
             }
 

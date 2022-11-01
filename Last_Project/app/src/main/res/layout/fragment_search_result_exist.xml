@@ -155,6 +155,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recv_search_result"
             android:layout_width="match_parent"
+            android:stackFromBottom="true"
+            app:reverseLayout="true"
             android:layout_height="wrap_content">
 
         </androidx.recyclerview.widget.RecyclerView>
